@@ -156,6 +156,9 @@ class MqttService
         foreach($topics as $key => $topic){
             $buffer .= $this->strwritestring($key,$i);
             $buffer .= chr($topic["qos"]);  $i++;
+            if (($parts = explode('/', $key))[0] == '$share') {
+                $key = implode('/',array_slice($parts, 2, count($parts) - 2));
+            }
             $this->topics[$key] = $topic;
         }
         $cmd = 0x80;
